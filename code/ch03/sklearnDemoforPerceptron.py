@@ -1,18 +1,17 @@
+# 导入sklearn和numpy
 
-```python
-# 导入sklearn、numpy
 from sklearn import datasets
 import numpy as np
-```
 
-```python
 # 加载鸢尾花数据集（150个样本）
-iris = datasets.load_iris()
-```
 
-```python
+iris = datasets.load_iris()
+
+# 查看特征和标签的值
+
 print(iris.feature_names,iris.data,iris.target_names,iris.target)
-```
+
+# 以下是输出结果：
 
 ['sepal length (cm)', 'sepal width (cm)', 'petal length (cm)', 'petal width (cm)']
 
@@ -175,17 +174,13 @@ print(iris.feature_names,iris.data,iris.target_names,iris.target)
  2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
  2 2]
 
-
-```python
 # 特征有4种，取2，3两列构建特征矩阵X
 
 X = iris.data[:,[2,3]]
-```
 
-
-```python
 print(X)
-```
+
+# 查看特征矩阵
 
 [[1.4 0.2]
  [1.4 0.2]
@@ -337,24 +332,24 @@ print(X)
  [5.2 2. ]
  [5.4 2.3]
  [5.1 1.8]]
-    
 
-```python
-# 目标
+# 样本标签y
+
 y = iris.target
-```
 
-```python
-# 查看目标种类
+# 查看样本标签种类
+
 np.unique(y)
-```
+
+# 输出结果
 
 array([0, 1, 2])
 
+# 查看样本标签
 
-```python
 print(y)
-```
+
+# 输出结果
 
 [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
  0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
@@ -362,47 +357,40 @@ print(y)
  2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
  2 2]
     
+# 数据预处理
 
-```python
 from sklearn.cross_validation import train_test_split
-```
 
 # 训练和预测，按3:7拆分数据集
 
-```python
 X_train, X_test, y_train, y_test = train_test_split (
 X, y, test_size = 0.3, random_state=0)
-```
 
-# 标准化处理
+# 标准化处理 StandardScaler
 
-```python
 from sklearn.preprocessing import StandardScaler
-```
 
-```python
 sc = StandardScaler()
-```
 
-```python
+# 使用StandardScaler.fit()计算训练集中每个特征的样本均值和标准差
+
 sc.fit(X_train)
-```
+
+# 参数列表
 
 StandardScaler(copy=True, with_mean=True, with_std=True)
 
+#使用transform()做标准化处理
 
-```python
 X_train_std = sc.transform(X_train)
-```
 
-```python
 X_test_std = sc.transform(X_test)
-```
 
-```python
-# 标准化处理后结果
+# 标准化处理
+
 print(X_train_std);print("****************************");print(X_test_std)
-```
+
+# 输出结果
 
     [[-0.18295039 -0.29145882]
      [ 0.93066067  0.73721938]
@@ -555,41 +543,33 @@ print(X_train_std);print("****************************");print(X_test_std)
      [ 0.70793846  1.38014325]
      [-1.24088089 -0.80579792]
      [-1.29656144 -1.32013702]]
-    
 
-# 数据处理好之后，通过感知器的【fit方法】训练模型
+# 训练模型
 
-
-```python
 from sklearn.linear_model import Perceptron
-```
 
-```python
 ppn = Perceptron(n_iter=40, eta0=0.01, random_state = 0) 
-```
 
-```python
+# 通过感知器的Perceptron.fit()训练模型
+
 ppn.fit(X_train_std, y_train)
-```
 
-# eta0
-# n_iter
+# eta0 : 学习速率
+# n_iter : 迭代次数
 # shuffle : 每次迭代随机打乱训练集
 
 Perceptron(alpha=0.0001, class_weight=None, eta0=0.01, fit_intercept=True,
       max_iter=None, n_iter=40, n_jobs=1, penalty=None, random_state=0,
       shuffle=True, tol=None, verbose=0, warm_start=False)
 
-# 在测试集使用 predict() 进行预测
+# 在测试集使用Perceptron.predict()进行预测
 
-```python
 y_pred = ppn.predict(X_test_std)
-```
 
-```python
-# 误分类率：
+# 计算误分类率
+
 print("Misclassified samples: %d" % (y_test!=y_pred).sum())
-```
 
-# 如果
+# 误分类结果
+
 Misclassified samples: 4
